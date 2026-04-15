@@ -34,6 +34,11 @@ int codigoError; // VARIABLE GLOBAL: Visible por todos los subprogramas.
 ////////////////////////////////////////////////////////////////////////////////
 
 
+void esperarINTRO (void)
+{
+  vaciarBuffer();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  FUNCIÓN:
@@ -66,17 +71,58 @@ int codigoError; // VARIABLE GLOBAL: Visible por todos los subprogramas.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-void esperarINTRO (void)
-{
-  vaciarBuffer();
-}
-
 
 void descartarEntrada (void)
 {
   vaciarBuffer();
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void descartarEntrada (void);
+//
+//  USO:
+//
+//    Programa que produce una espera hasta que se pulse INTRO.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función vaciarBuffer(), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    Ninguno
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    vaciarBuffer()
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+void vaciarBuffer (void)
+{
+  // ENTER CREADO EN DEFINE = ASCII(10) = 0x0A
+  
+  // MEDIANTE BUCLE DO-WHILE:
+  char letra;
+  do
+  {
+    letra = getchar();
+  } while (letra != ENTER);
+  
+  // MEDIANTE BUBLE WHILE:
+  // while (getchar() != '\n')   ; // Bucle vacío
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -112,26 +158,44 @@ void descartarEntrada (void)
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-void vaciarBuffer (void)
-{
-  // ENTER CREADO EN DEFINE = ASCII(10) = 0x0A
-  
-  // MEDIANTE BUCLE DO-WHILE:
-  char letra;
-  do
-  {
-    letra = getchar();
-  } while (letra != ENTER);
-  
-  // MEDIANTE BUBLE WHILE:
-  // while (getchar() != '\n')   ; // Bucle vacío
-}
-
 
 void borrarPantalla (void)
 {
   limpiarPantalla();
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void borrarPantalla (void);
+//
+//  USO:
+//
+//    Programa que borra lo que se haya emitido previamente en la pantalla
+//    (normalmente usando la función printf()).
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función limpiarPantalla(), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    Ninguno
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    limpiarPantalla()
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void limpiarPantalla (void)
@@ -139,6 +203,48 @@ void limpiarPantalla (void)
   system(BORRAR);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void limpiarPantalla (void);
+//
+//  USO:
+//
+//    Programa que borra lo que se haya emitido previamente en la pantalla
+//    (normalmente usando la función printf()).
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función system(BORRAR), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    Ninguno
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    system(BORRAR)
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+void bajar (int nlineas)
+{
+  while(nlineas>0)
+  {
+    printf("\n");   // No se puede usar "mostrar()" porque crearíamos un bucle de llamadas.
+    
+    nlineas--;
+  }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -156,7 +262,7 @@ void limpiarPantalla (void)
 //    cursor de texto en ninguna coordenada concreta, sino que genera contenido
 //    en blanco en la pantalla, desplazando el punto donde se escribirá texto en
 //    acciones posteriores. Utiliza para ello un bucle en cuyo interior se llama
-//    a printf() con el código ASCII de salto de línea '\n' ó 0x10.
+//    a printf() con el código ASCII de salto de línea '\n' ó 10.
 //
 //  PARÁMETROS DE ENTRADA:
 //
@@ -178,21 +284,46 @@ void limpiarPantalla (void)
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-void bajar (int nlineas)
-{
-  while(nlineas>0)
-  {
-    printf("\n");   // No se puede usar "mostrar()" porque crearíamos un bucle de llamadas.
-    
-    nlineas--;
-  }
-}
-
 
 void abajo (int nfils)
 {
   bajar(nfils);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void abajo (int nfils);
+//
+//  USO:
+//
+//    Permite bajar el cursor en la pantalla, tantas líneas como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función bajar(nfils), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    nfils
+//
+//      Variable entera que recibirá del exterior el número de líneas en blanco
+//      que se va a desplazar el cursor hacia abajo.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    bajar(nfils)
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void saltar (int nfils)
@@ -200,11 +331,81 @@ void saltar (int nfils)
   bajar(nfils);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void saltar (int nfils);
+//
+//  USO:
+//
+//    Permite bajar el cursor en la pantalla, tantas líneas como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función bajar(nfils), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    nfils
+//
+//      Variable entera que recibirá del exterior el número de líneas en blanco
+//      que se va a desplazar el cursor hacia abajo.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    bajar(nfils)
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 
 void desplazarFils (int nfils)
 {
   bajar(nfils);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void desplazarFils (int nfils);
+//
+//  USO:
+//
+//    Permite bajar el cursor en la pantalla, tantas líneas como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función bajar(nfils), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    nfils
+//
+//      Variable entera que recibirá del exterior el número de líneas en blanco
+//      que se va a desplazar el cursor hacia abajo.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    bajar(nfils)
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void desplazarV (int nfils)
@@ -212,11 +413,81 @@ void desplazarV (int nfils)
   bajar(nfils);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void desplazarV (int nfils);
+//
+//  USO:
+//
+//    Permite bajar el cursor en la pantalla, tantas líneas como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función bajar(nfils), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    nfils
+//
+//      Variable entera que recibirá del exterior el número de líneas en blanco
+//      que se va a desplazar el cursor hacia abajo.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    bajar(nfils)
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 
 void desplazarY (int nfils)
 {
   bajar(nfils);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void desplazarY (int nfils);
+//
+//  USO:
+//
+//    Permite bajar el cursor en la pantalla, tantas líneas como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función bajar(nfils), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    nfils
+//
+//      Variable entera que recibirá del exterior el número de líneas en blanco
+//      que se va a desplazar el cursor hacia abajo.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    bajar(nfils)
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void indentar (int ncolumnas)
@@ -227,11 +498,85 @@ void indentar (int ncolumnas)
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void indentar (int ncolumnas);
+//
+//  USO:
+//
+//    Permite avanzar el cursor en la pantalla, tantos espacios como se le indique.
+//
+//  DETALLES:
+//
+//    Crea tantos espacios como se le suministre como dato. No ubica el
+//    cursor de texto en ninguna coordenada concreta, sino que genera contenido
+//    en blanco en la pantalla, desplazando el punto donde se escribirá texto en
+//    acciones posteriores. Utiliza para ello un bucle en cuyo interior se llama
+//    a printf() con el código ASCII de espacio ' ' ó 32 hasta que se completen 
+//    tantas vueltas como sean necesarias hasta llegar al número de espacios suministrado.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    ncolumnas
+//
+//      Variable entera que recibirá del exterior el número de espacios
+//      que se va a desplazar el cursor en el sentido de la tabulación.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    printf()
+//
+//      Es el programa estándar ("prefabricado") que hace la logística de
+//      emitir por pantalla.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 
 void derecha (int ncols)
 {
   indentar(ncols);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void derecha (int ncols);
+//
+//  USO:
+//
+//    Permite avanzar el cursor en la pantalla, tantos espacios como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función indentar(ncols), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    ncols
+//
+//      Variable entera que recibirá del exterior el número de espacios
+//      que se va a desplazar el cursor en el sentido de la tabulación.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    indentar(ncols)
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void tabular (int ncols)
@@ -239,11 +584,81 @@ void tabular (int ncols)
   indentar(ncols);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void tabular (int ncols);
+//
+//  USO:
+//
+//    Permite avanzar el cursor en la pantalla, tantos espacios como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función indentar(ncols), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    ncols
+//
+//      Variable entera que recibirá del exterior el número de espacios
+//      que se va a desplazar el cursor en el sentido de la tabulación.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    indentar(ncols)
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 
 void desplazarCols (int ncols)
 {
   indentar(ncols);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void desplazarCols (int ncols);
+//
+//  USO:
+//
+//    Permite avanzar el cursor en la pantalla, tantos espacios como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función indentar(ncols), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    ncols
+//
+//      Variable entera que recibirá del exterior el número de espacios
+//      que se va a desplazar el cursor en el sentido de la tabulación.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    indentar(ncols)
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void desplazarX (int ncols)
@@ -251,18 +666,127 @@ void desplazarX (int ncols)
   indentar(ncols);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void desplazarX (int ncols);
+//
+//  USO:
+//
+//    Permite avanzar el cursor en la pantalla, tantos espacios como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función indentar(ncols), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    ncols
+//
+//      Variable entera que recibirá del exterior el número de espacios
+//      que se va a desplazar el cursor en el sentido de la tabulación.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    indentar(ncols)
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 
 void desplazarH (int ncols)
 {
   indentar(ncols);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void desplazarH (int ncols);
+//
+//  USO:
+//
+//    Permite avanzar el cursor en la pantalla, tantos espacios como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función indentar(ncols), a la cual delega todo el
+//    trabajo. Es una manera de crear "sinónimos" de acciones, es decir, de
+//    tener disponibles varios nombres para hacer lo mismo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    ncols
+//
+//      Variable entera que recibirá del exterior el número de espacios
+//      que se va a desplazar el cursor en el sentido de la tabulación.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    indentar(ncols)
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 void posicionar (int nfils, int ncols)
 {
   bajar(nfils);
   tabular(ncols);
 }
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void posicionar (int nfils, int ncols);
+//
+//  USO:
+//
+//    Permite avanzar el cursor en la pantalla, tantos espacios como se le indique y 
+//    bajar el cursor en la pantalla, tantas líneas como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de las funciones bajar(nfils) y tabular(ncols), a las cuales delega todo el
+//    trabajo. Es una forma de combinar desplazamiento vertical y horizontal en una sola función.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    ncols
+//
+//      Variable entera que recibirá del exterior el número de espacios
+//      que se va a desplazar el cursor en el sentido de la tabulación.
+//
+//    nfils
+//
+//      Variable entera que recibirá del exterior el número de líneas en blanco
+//      que se va a desplazar el cursor hacia abajo.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    bajar(nfils)
+//    tabular(ncols)
+//
+//      Se delega toda la carga de trabajo a estas funciones.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void desplazar (int nfils, int ncols)
@@ -270,12 +794,92 @@ void desplazar (int nfils, int ncols)
   posicionar(nfils, ncols);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void desplazar (int nfils, int ncols);
+//
+//  USO:
+//
+//    Permite avanzar el cursor en la pantalla, tantos espacios como se le indique y 
+//    bajar el cursor en la pantalla, tantas líneas como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función posicionar (nfils, ncols), a la cual delega todo el
+//    trabajo. Es una forma de combinar desplazamiento vertical y horizontal en una sola función.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    ncols
+//
+//      Variable entera que recibirá del exterior el número de espacios
+//      que se va a desplazar el cursor en el sentido de la tabulación.
+//
+//    nfils
+//
+//      Variable entera que recibirá del exterior el número de líneas en blanco
+//      que se va a desplazar el cursor hacia abajo.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    posicionar (nfils, ncols);
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 
 void desplazarXY (int nfils, int ncols)
 {
   posicionar(nfils, ncols);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void desplazarXY (int nfils, int ncols);
+//
+//  USO:
+//
+//    Permite avanzar el cursor en la pantalla, tantos espacios como se le indique y 
+//    bajar el cursor en la pantalla, tantas líneas como se le indique.
+//
+//  DETALLES:
+//
+//    Es un envoltorio de la función posicionar (nfils, ncols), a la cual delega todo el
+//    trabajo. Es una forma de combinar desplazamiento vertical y horizontal en una sola función.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    ncols
+//
+//      Variable entera que recibirá del exterior el número de espacios
+//      que se va a desplazar el cursor en el sentido de la tabulación.
+//
+//    nfils
+//
+//      Variable entera que recibirá del exterior el número de líneas en blanco
+//      que se va a desplazar el cursor hacia abajo.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    posicionar (nfils, ncols);
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
+void actual()
 
 void retardoSegundos (int segundosmax)
 {
@@ -285,12 +889,46 @@ void retardoSegundos (int segundosmax)
 
   for(int nseg=0; nseg < segundosmax ; nseg++)
   {
-    for(int j=0; j<100; j++)
+    for(int i=0; i<100; i++)
       for(int j=0; j<1000; j++)
         for(int k=0; k<1000; k++)   ;
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void retardoSegundos (int segundosmax);
+//
+//  USO:
+//
+//    Permite gastar un tiempo, que luego puede usarse para retardar alguna acción.
+//
+//  DETALLES:
+//
+//    Crea tres bucles anidados que deben gastar tanto tiempo en la 
+//    realización de los ciclos de reloj del procesador como sea necesario 
+//    para llegar a un segundo, de tal forma que 
+//    la función tenga sentido. El bucle inicial ejecuta estos 
+//    bucles funcionales tantas veces como segundos (Ajustando los valores
+//    para conseguir el tiempo de duración deseado para cada tipo de procesador
+//    en el que se ejecute la función) se hayan solicitado.
+//  PARÁMETROS DE ENTRADA:
+//
+//    segundosmax
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    posicionar (nfils, ncols);
+//
+//      Se delega toda la carga de trabajo a esta función.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 void retardoMilisegundos (int milisegundosmax)
 {
@@ -439,8 +1077,23 @@ int generaAleatorioEntero (int limite)
 {
   // Generará un número entre 0 y limite - 1, nunca llega a limite.
   return (rand() % limite);
+  //TAMBIÉN PUEDE SER:
+  // int num;
+  //num= rand()%limite; Se hace la división y se coge el resto,
+  //					que si el límite es 100 será entre 0 y 99.
+  //return num;
 }
 
+
+int obtenerEntero (void)
+{
+  int valor;
+  
+  scanf("%d", &valor);
+  vaciarBuffer();
+
+  return valor;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -462,10 +1115,7 @@ int generaAleatorioEntero (int limite)
 //
 //  PARÁMETROS DE ENTRADA:
 //
-//    nlineas
-//
-//      Variable entera que recibirá del exterior el número de líneas en blanco
-//      que se va a desplazar el cursor hacia abajo.
+//    Ninguno.
 //
 //  VALOR DE SALIDA:
 //
@@ -481,18 +1131,7 @@ int generaAleatorioEntero (int limite)
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-int obtenerEntero (void)
-{
-  int valor;
-  
-  scanf("%d", &valor);
-  vaciarBuffer();
-
-  return valor;
-}
-
-
-char obtenerCaracterASCII()
+char obtenerCaracterASCII(void)
 {
   return obtenerLetra();
 }
@@ -517,6 +1156,14 @@ char obtenerLetra (void)   // Sólo ASCII VÁLIDO.
 }
 
 
+int pedirEntero (char msjtxt[], int ncols)
+{
+  mensaje(msjtxt, 0, ncols);
+  mostrar(": ");
+  
+  return obtenerEntero();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  FUNCIÓN:
@@ -539,12 +1186,12 @@ char obtenerLetra (void)   // Sólo ASCII VÁLIDO.
 //
 //  PARÁMETROS DE ENTRADA:
 //
-//    mensaje
+//    msjtxt
 //
 //      Variable de tipo vector de caracteres donde se recibirá el texto que se
 //      debe mostrar, que debe ser una cadena terminada en '\0'.
 //
-//    tabs
+//    ncols
 //
 //      Variable entera donde se recibirá del exterior el número de espacios en
 //      blanco a añadir antes del mensaje.
@@ -570,13 +1217,6 @@ char obtenerLetra (void)   // Sólo ASCII VÁLIDO.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-int pedirEntero (char msjtxt[], int ncols)
-{
-  mensaje(msjtxt, 0, ncols);
-  mostrar(": ");
-  
-  return obtenerEntero();
-}
 
 
 int pedirEnteroPositivo (char msjtxt[], int ncols, boolean mostrarerror)
