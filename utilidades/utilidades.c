@@ -879,7 +879,6 @@ void desplazarXY (int nfils, int ncols)
 //      Se delega toda la carga de trabajo a esta función.
 //
 ////////////////////////////////////////////////////////////////////////////////
-void actual()
 
 void retardoSegundos (int segundosmax)
 {
@@ -891,7 +890,7 @@ void retardoSegundos (int segundosmax)
   {
     for(int i=0; i<100; i++)
       for(int j=0; j<1000; j++)
-        for(int k=0; k<1000; k++)   ;
+        for(int k=0; k<1000; k++);
   }
 }
 
@@ -914,9 +913,13 @@ void retardoSegundos (int segundosmax)
 //    bucles funcionales tantas veces como segundos (Ajustando los valores
 //    para conseguir el tiempo de duración deseado para cada tipo de procesador
 //    en el que se ejecute la función) se hayan solicitado.
+//
 //  PARÁMETROS DE ENTRADA:
 //
 //    segundosmax
+//     
+//      Variable entera que define el número de segundos durante el que se
+//      ejecutará la función.
 //
 //  VALOR DE SALIDA:
 //
@@ -924,11 +927,10 @@ void retardoSegundos (int segundosmax)
 //
 //  FUNCIONES DE LAS QUE DEPENDE:
 //
-//    posicionar (nfils, ncols);
-//
-//      Se delega toda la carga de trabajo a esta función.
+//    bucles for(,,,)
 //
 ////////////////////////////////////////////////////////////////////////////////
+
 
 void retardoMilisegundos (int milisegundosmax)
 {
@@ -938,8 +940,45 @@ void retardoMilisegundos (int milisegundosmax)
 
   for (int nmiliseg=0; nmiliseg<milisegundosmax ; nmiliseg++)
     for (i=0; i<100; i++)
-      for (j=0; j<1000; j++)   ;
+      for (j=0; j<1000; j++);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void retardoMilisegundos (int milisegundosmax);
+//
+//  USO:
+//
+//    Permite gastar un tiempo, que luego puede usarse para retardar alguna acción.
+//
+//  DETALLES:
+//
+//    Crea tres bucles anidados que deben gastar tanto tiempo en la 
+//    realización de los ciclos de reloj del procesador como sea necesario 
+//    para llegar a un milisegundo, de tal forma que 
+//    la función tenga sentido. El bucle inicial ejecuta estos 
+//    bucles funcionales tantas veces como milisegundos (Ajustando los valores
+//    para conseguir el tiempo de duración deseado para cada tipo de procesador
+//    en el que se ejecute la función) se hayan solicitado.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    milisegundosmax
+//     
+//      Variable entera que define el número de milisegundos durante el que se
+//      ejecutará la función.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    bucles for(,,,)
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void retrasoMilisegundos (int milisegundos)
@@ -956,6 +995,48 @@ void retrasoMilisegundos (int milisegundos)
   } while (e<milisegundos);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void retrasoMilisegundos (int milisegundos);
+//
+//  USO:
+//
+//    Permite gastar un tiempo, que luego puede usarse para retardar alguna acción.
+//
+//  DETALLES:
+//    Crea una variable double y una clock_t que inicia un "temporizador".
+//    Después crea un bucle que convierte el clock_t, que entiende el ordenador,
+//    en double para poder dividirlo entre CLOCKS_PER_SEC. Esta operación lo pasa
+//    de ciclos por segundo del tiempo total (desde que se inicializó clock() hasta que
+//    se mencionó dentro del bucle) a microsegundos y lo multiplica por 1000 
+//    para obtener un milisegundo. Mientras los milisegundos que tenga asignados "e"
+//    sean menos que los milisegundos pedidos, el bucle se repite y como el "temporizador"
+//    no se para, cada vez que pase por clock() da el tiempo que lleva (en este caso
+//    haciendo el bucle). Cundo los milisegundos lleguen a los pedidos, el bucle
+//    finaliza y la función termina.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    milisegundos
+//     
+//      Variable entera que define el número de milisegundos durante el que se
+//      ejecutará la función.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    clock()
+//      Función de tipo clock_t que da el tiempo que ha pasado desde
+//    que se creó, fuera del bucle en este caso.
+//    
+//    bucle do {} while
+//
+////////////////////////////////////////////////////////////////////////////////
 
 void esperarSegundos (int segundos)
 {
@@ -966,6 +1047,39 @@ void esperarSegundos (int segundos)
   #endif
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void esperarSegundos (int segundos);
+//
+//  USO:
+//
+//    Permite gastar un tiempo, que luego puede usarse para retardar alguna acción.
+//
+//  DETALLES:
+//    Dependiendo del sistema operativo usa una función u otra, ya que en 
+//    Windows, la función trabaja con milisegundos y en Linux en segundos.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    segundos
+//     
+//      Variable entera que define el número de segundos durante el que se
+//      pausará el proceso.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    sleep()
+//      Función que paraliza el proceso durante tantos segundos como
+//      se especifique entre paréntesis.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 
 void esperarMilisegundos (int milisegundos)
 {
@@ -975,18 +1089,110 @@ void esperarMilisegundos (int milisegundos)
     usleep(milisegundos*1000);   // Alternativa: nanosleep() de "time.h".
   #endif
 }
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void esperarMilisegundos (int milisegundos);
+//
+//  USO:
+//
+//    Permite gastar un tiempo, que luego puede usarse para retardar alguna acción.
+//
+//  DETALLES:
+//    Dependiendo del sistema operativo usa una función u otra, ya que en 
+//    Windows, la función trabaja con milisegundos y en Linux, usleep()
+//    trabaja con microsegundos.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    milisegundos
+//     
+//      Variable entera que define el número de milisegundos durante el que se
+//      pausará el proceso.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    Sleep()
+//      Función que paraliza el proceso durante tantos milisegundos como
+//      se especifique entre paréntesis.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void pausa (void)
 {
   pausaEstandar(1, 2);
 }
-
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void pausa (void);
+//
+//  USO:
+//
+//
+//  DETALLES:
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    Ninguno
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    pausaEstandar()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 void pausaEstandar (int nfils, int ncols)
 {
   pausaGenerica(MSJxPAUSA, nfils, ncols, FALSE);
 }
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void pausaEstandar (int nfils, int ncols);
+//
+//  USO:
+//
+//    Presenta algo en pantalla y produce una espera hasta que se pulse INTRO.
+//
+//  DETALLES:
+//    Baja tantas líneas como nfils y tabula tantas veces como ncols.
+//    Donde queda el cursor muestra el mensaje de pausa.
+//    No salta de línea. Espera hasta que se pulse INTRO para continuar.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    ncols
+//
+//      Variable entera que recibirá del exterior el número de espacios
+//      que se va a desplazar el cursor en el sentido de la tabulación.
+//
+//    nfils
+//
+//      Variable entera que recibirá del exterior el número de líneas en blanco
+//      que se va a desplazar el cursor hacia abajo.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    pausaGenerica()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void pausaGenerica (char msjtxt[], int nfils, int ncols, boolean nuevalinea)
@@ -995,12 +1201,85 @@ void pausaGenerica (char msjtxt[], int nfils, int ncols, boolean nuevalinea)
 
   esperarINTRO();
 }
-
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void pausaGenerica (char msjtxt[], int nfils, int ncols, boolean nuevalinea);
+//
+//  USO:
+//
+//    Presenta algo en pantalla y produce una espera hasta que se pulse INTRO.
+//
+//  DETALLES:
+//    Baja tantas líneas como nfils y tabula tantas veces como ncols.
+//    Donde queda el cursor muestra el mensaje que ha recibido.
+//    Además si nuevalinea es TRUE, salta de línea. Espera hasta que se 
+//    pulse INTRO para continuar.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[]
+//
+//      Variable tipo char que recibe el texto a mostrar.
+//
+//    nuevalinea
+//
+//      Variable de tipo boolean que especifica si se crea una línea en blanco.
+//
+//    ncols
+//
+//      Variable entera que recibirá del exterior el número de espacios
+//      que se va a desplazar el cursor en el sentido de la tabulación.
+//
+//    nfils
+//
+//      Variable entera que recibirá del exterior el número de líneas en blanco
+//      que se va a desplazar el cursor hacia abajo.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    mensaje_x_y()
+//    esperarINTRO()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 void texto (char msjtxt[])
 {
   puts(msjtxt);
 }
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void texto (char msjtxt[]);
+//
+//  USO:
+//
+//    Presenta un mensaje en pantalla.
+//
+//  DETALLES:
+//   Muestra en pantalla un mensaje que recibe del exterior.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[]
+//
+//      Variable tipo char que recibe el texto a mostrar.
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    puts()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void separar()
@@ -1008,35 +1287,196 @@ void separar()
   mostrar("\n");
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void separar();
+//
+//  USO:
+//
+//    Presenta predeterminadamente un salto de línea en pantalla.
+//    Es como printf("\n");
+//
+//  DETALLES:
+//    Baja una línea (es como pulsar INTRO).
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    Ninguno
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    mostrar()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 void nuevaLinea (void)
 {
   saltar(1);
 }
-
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void nuevaLinea (void);
+//
+//  USO:
+//
+//    Permite bajar el cursor en la pantalla una línea.
+//
+//  DETALLES:
+//
+//    Baja una línea (es como separar()).
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//   Ninguno
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    saltar()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 void mostrar (char msjtxt[])
 {
   mostrar_x_y (msjtxt, 0, 0);
 }
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void mostrar (char msjtxt[]);
+//
+//  USO:
+//
+//    Presenta un mensaje en pantalla.
+//
+//  DETALLES:
+//    No baja líneas y no tabula. Sólo muestra el mensaje que ha recibido.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[]
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    mostrar_x_y ()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void mostrar_x_y (char msjtxt[], int nfils, int ncols)
 {
   mensaje_x_y (msjtxt, nfils, ncols, FALSE);
 }
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void mostrar_x_y (char msjtxt[], int nfils, int ncols);
+//
+//  USO:
+//
+//    Presenta un mensaje con saltos de línea o tabulaciones al gusto en pantalla.
+//
+//  DETALLES:
+//    Baja tantas líneas como nfils y tabula tantas veces como ncols.
+//    Donde queda el cursor muestra el mensaje que ha recibido.
+//    Además como nuevalinea es FALSE, no salta de línea.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[], nfils, ncols
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    mensaje_x_y ()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void escribir (char msjtxt[])
 {
   escribir_x_y (msjtxt, 0, 0);
 }
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void escribir (char msjtxt[]);
+//
+//  USO:
+//
+//    Presenta un mensaje en pantalla.
+//
+//  DETALLES:
+//    No baja líneas y no tabula. Sólo muestra el mensaje que ha recibido.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[]
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    escribir_x_y ()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void escribir_x_y (char msjtxt[], int nfils, int ncols)
 {
   mensaje_x_y (msjtxt, nfils, ncols, FALSE);
 }
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void escribir_x_y (char msjtxt[], int nfils, int ncols);
+//
+//  USO:
+//
+//    Presenta un mensaje con saltos de línea o tabulaciones al gusto en pantalla.
+//
+//  DETALLES:
+//    Baja tantas líneas como nfils y tabula tantas veces como ncols.
+//    Donde queda el cursor muestra el mensaje que ha recibido.
+//    Además como nuevalinea es FALSE, no salta de línea.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[], nfils, ncols
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    mensaje_x_y ()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void imprimir (char msjtxt[])
@@ -1044,11 +1484,66 @@ void imprimir (char msjtxt[])
   imprimir_x_y (msjtxt, 0, 0);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void imprimir (char msjtxt[]);
+//
+//  USO:
+//
+//    Presenta un mensaje en pantalla.
+//
+//  DETALLES:
+//    No baja líneas y no tabula. Sólo muestra el mensaje que ha recibido.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[]
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    imprimir_x_y ()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 void imprimir_x_y (char msjtxt[], int nfils, int ncols)
 {
   mensaje_x_y (msjtxt, nfils, ncols, FALSE);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void imprimir_x_y (char msjtxt[], int nfils, int ncols);
+//
+//  USO:
+//
+//    Presenta un mensaje con saltos de línea o tabulaciones al gusto en pantalla.
+//
+//  DETALLES:
+//    Baja tantas líneas como nfils y tabula tantas veces como ncols.
+//    Donde queda el cursor muestra el mensaje que ha recibido.
+//    Además como nuevalinea es FALSE, no salta de línea.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[], nfils, ncols
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    mensaje_x_y ()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 void mensaje (char msjtxt[], int nfils, int ncols)
@@ -1056,7 +1551,37 @@ void mensaje (char msjtxt[], int nfils, int ncols)
   mensaje_x_y (msjtxt, nfils, ncols, FALSE);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void mensaje (char msjtxt[], int nfils, int ncols);
+//
+//  USO:
+//
+//    Presenta un mensaje con saltos de línea o tabulaciones al gusto en pantalla.
+//
+//  DETALLES:
+//    Baja tantas líneas como nfils y tabula tantas veces como ncols.
+//    Donde queda el cursor muestra el mensaje que ha recibido.
+//    Además como nuevalinea es FALSE, no salta de línea.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[], nfils, ncols
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    mensaje_x_y ()
+//
+////////////////////////////////////////////////////////////////////////////////
 
+
+void actual();
 void mensaje_x_y (char msjtxt[], int nfils, int ncols, boolean nuevalinea)
 {
   saltar(nfils);
@@ -1066,12 +1591,70 @@ void mensaje_x_y (char msjtxt[], int nfils, int ncols, boolean nuevalinea)
   if (nuevalinea)   printf("\n");   // ALTERNATIVA: if (nuevalinea)   putchar(ENTER);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void mensaje_x_y (char msjtxt[], int nfils, int ncols, boolean nuevalinea);
+//
+//  USO:
+//
+//    Presenta algo en pantalla.
+//
+//  DETALLES:
+//    Baja tantas líneas como nfils y tabula tantas veces como ncols.
+//    Donde queda el cursor muestra el mensaje que ha recibido.
+//    Además si nuevalinea es TRUE, salta de línea.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[], nfils, ncols, nuevalinea
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    saltar()
+//    tabular()
+//    printf()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 void iniciaAleatorizador (void)
 {
   srand(time(NULL));
 }
-
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void iniciaAleatorizador (void);
+//
+//  USO:
+//
+//    Genera un número aleatorio.
+//
+//  DETALLES:
+//    time(NULL) da la cantidad de segundos que han pasado desde el 1 de enero de 1970.
+//    srand() da un número aleatorio usando time(NULL) cmomo semilla para que lo de dentro (semilla)
+//    siempre sea distinto y no genere la misma sucesión siempre.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    Ninguno
+//
+//  VALOR DE SALIDA:
+//
+//    No devuelve ningún valor.
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    srand()
+//    time(NULL)
+//
+////////////////////////////////////////////////////////////////////////////////
 
 int generaAleatorioEntero (int limite)
 {
@@ -1083,7 +1666,34 @@ int generaAleatorioEntero (int limite)
   //					que si el límite es 100 será entre 0 y 99.
   //return num;
 }
-
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    void generaAleatorioEntero (int limite);
+//
+//  USO:
+//
+//    Genera un número aleatorio.
+//
+//  DETALLES:
+//    Se devuelve el resultado del resto de la división de un número aleatorio
+//    entre el límite, de tal forma que el resultado nunca será el límite,
+//    sino que estará entre 0 y limite-1.
+//   
+//  PARÁMETROS DE ENTRADA:
+//
+//    limite
+//
+//  VALOR DE SALIDA:
+//
+//    Resto de la división de un número aleatorio entre el límite
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    Ninguna
+//
+////////////////////////////////////////////////////////////////////////////////
 
 int obtenerEntero (void)
 {
@@ -1136,6 +1746,35 @@ char obtenerCaracterASCII(void)
   return obtenerLetra();
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    char obtenerCaracterASCII (void);
+//
+//  USO:
+//
+//    Devolver la comprobación de si el código de un caracter está entre los primeros 128 ASCII.
+//
+//  DETALLES:
+//
+//    Obtiene la letra con getchar y luego comprueba si su código ASCII 
+//    está entre los primeros 128. Si es así, devuelve la misma letra. 
+//    Si no, devuelve la letra nula.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    Ninguno
+//
+//  VALOR DE SALIDA:
+//
+//    obtenerLetra()
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    obtenerLetra()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 char obtenerLetra (void)   // Sólo ASCII VÁLIDO.
 {
@@ -1154,7 +1793,37 @@ char obtenerLetra (void)   // Sólo ASCII VÁLIDO.
 
   return valida;
 }
-
+//depende de getchar y vaciarBuffer
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    char obtenerLetra (void);
+//
+//  USO:
+//
+//    Comprobar si el código de un caracter está entre los primeros 128 ASCII.
+//
+//  DETALLES:
+//
+//    Obtiene la letra con getchar y luego comprueba si su código ASCII 
+//    está entre los primeros 128. Si es así, devuelve la misma letra. 
+//    Si no, devuelve la letra nula.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    Ninguna
+//
+//  VALOR DE SALIDA:
+//
+//    valida (la letra dada si era de las permitidas o la nula si no lo era)
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    getchar()
+//    vaciarBuffer()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 int pedirEntero (char msjtxt[], int ncols)
 {
@@ -1221,7 +1890,7 @@ int pedirEntero (char msjtxt[], int ncols)
 
 int pedirEnteroPositivo (char msjtxt[], int ncols, boolean mostrarerror)
 {
-  int num;
+int num;
   
   do
   {
@@ -1244,6 +1913,59 @@ int pedirEnteroPositivo (char msjtxt[], int ncols, boolean mostrarerror)
   return num;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//   int pedirEnteroPositivo (char msjtxt[], int ncols, boolean mostrarerror);
+//
+//  USO:
+//
+//    Muestra un mensaje en pantalla para pedir un dato entero positivo al usuario. El
+//    mensaje es configurable, desplazable un número de caracteres desde la
+//    izquierda de la pantalla y puede mostrar un mensaje de error.
+//
+//  DETALLES:
+//
+//    Es como un printf() más un scanf(), mejorados. Puede desplazarse el texto
+//    recibido mediante un segundo dato entero. También impide problemas del
+//    buffer de teclado con scanf(). Para ello, delega el emitir el mensaje por
+//    pantalla a las funciones msj() y mostrar(), y la toma del dato entero a la
+//    función obtenerEntero(). Si se muestra error, se muestra una línea en blanco,
+//    un mensaje de error y una línea en blanco.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt
+//
+//      Variable de tipo vector de caracteres donde se recibirá el texto que se
+//      debe mostrar, que debe ser una cadena terminada en '\0'.
+//
+//    ncols
+//
+//      Variable entera donde se recibirá del exterior el número de espacios en
+//      blanco a añadir antes del mensaje.
+//
+//  VALOR DE SALIDA:
+//
+//    Devuelve al programa donde se invoque, un valor entero que a su vez esta
+//    función ha recibido desde la función obtenerEntero().
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    msj()
+//
+//      Se encarga efectivamente de mostrar el mensaje.
+//
+//    mostrar()
+//
+//      Usada para añadir en pantalla un texto adicional después del mensaje.
+//
+//    obtenerEntero()
+//
+//      Es la función que se encarga en la práctica de obtener la cantidad.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 int pedirEnteroIntervalo (char msjtxt[], int ncols, boolean mostrarerror, int min, int max)
 {
@@ -1270,9 +1992,61 @@ int pedirEnteroIntervalo (char msjtxt[], int ncols, boolean mostrarerror, int mi
   
   return num;
 }
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//   int pedirEnteroIntervalo (char msjtxt[], int ncols, boolean mostrarerror, int min, int max);
+//
+//  USO:
+//
+//    Muestra un mensaje en pantalla para pedir un dato entero dentro de un intervalo al usuario. El
+//    mensaje es configurable, desplazable un número de caracteres desde la
+//    izquierda de la pantalla y puede mostrar un mensaje de error, que se desplazará dos espacios más a la derecha.
+//
+//  DETALLES:
+//
+//    Es como un printf() más un scanf(), mejorados. Puede desplazarse el texto
+//    recibido mediante un segundo dato entero. También impide problemas del
+//    buffer de teclado con scanf(). Para ello, delega el emitir el mensaje por
+//    pantalla a las funciones msj() y mostrar(), y la toma del dato entero a la
+//    función obtenerEntero(). Si se muestra error, se muestra una línea en blanco,
+//    un mensaje de error y una línea en blanco. Esto se repite hasta que el usuario
+//    introduzca un número dentro del intervalo pedido.
+//
+//  PARÁMETROS DE ENTRADA:
+//    msjtxt
+//
+//      Variable de tipo vector de caracteres donde se recibirá el texto que se
+//      debe mostrar, que debe ser una cadena terminada en '\0'.
+//
+//    ncols
+//
+//      Variable entera donde se recibirá del exterior el número de espacios en
+//      blanco a añadir antes del mensaje.
+//
+//  VALOR DE SALIDA:
+//
+//    Devuelve al programa donde se invoque, un valor entero que a su vez esta
+//    función ha recibido desde la función obtenerEntero().
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    msj()
+//
+//      Se encarga efectivamente de mostrar el mensaje.
+//
+//    mostrar()
+//
+//      Usada para añadir en pantalla un texto adicional después del mensaje.
+//
+//    obtenerEntero()
+//
+//      Es la función que se encarga en la práctica de obtener la cantidad.
+//
+////////////////////////////////////////////////////////////////////////////////
 
-
-int pedirLetra (char msjtxt[], int ncols, boolean mostrarerror, char letra)
+char pedirLetra (char msjtxt[], int ncols, boolean mostrarerror, char letra)
 {
   char pedida;
   
@@ -1300,7 +2074,41 @@ int pedirLetra (char msjtxt[], int ncols, boolean mostrarerror, char letra)
   
   return pedida;
 }
-
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+///
+//   char pedirLetra (char msjtxt[], int ncols, boolean mostrarerror, char letra);
+//
+//  USO:
+//
+//    Pide una letra y la devuelve para que otros programas puedan usarla.
+//
+//  DETALLES:
+//
+//    La letra se pasa a mayúscula. Aparece el mensaje con la tabulación 
+//    pedida y dos puntos y se recibe la letra. Si se muestra error 
+//    aparece una línea en blanco, el mensaje de error y otra línea en blanco.
+//    Se devuelve la letra.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[], ncols, mostrarerror, letra
+//
+//  VALOR DE SALIDA:
+//
+//    pedida
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    mensaje()
+//    mostrar()
+//    obtenerLetra()
+//    toupper()
+//    mensaje_x_y()
+//    nuevaLinea()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 int pedirConfirmacion (char msjtxt[], int ncols, boolean mostrarerror)
 {
@@ -1328,6 +2136,42 @@ int pedirConfirmacion (char msjtxt[], int ncols, boolean mostrarerror)
   
   return letra;
 }
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//   char pedirConfirmacion (char msjtxt[], int ncols, boolean mostrarerror);
+//
+//  USO:
+//
+//   Se pide confirmación de algo y se devuelve la letra en cuestión (en 
+//   este caso S si se confirma o N si no.
+//
+//  DETALLES:
+//
+//    La letra se pasa a mayúscula. Aparece el mensaje con la tabulación 
+//    pedida y dos puntos y se recibe la letra. Si la letra no se ajusta a lo pedido se muestra error 
+//    se muestra error yaparece una línea en blanco, el mensaje de error y otra línea en blanco.
+//    Esto continúa hasta que se da una de las letras permitidas, que se devuelve.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[], ncols, mostrarerror
+//
+//  VALOR DE SALIDA:
+//
+//    letra
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    mensaje()
+//    printf()
+//    obtenerLetra()
+//    toupper()
+//    mensaje_x_y()
+//    nuevaLinea()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 boolean validarLetraUnica (char original, char dada, boolean sensibleamayusculas)
@@ -1338,8 +2182,37 @@ boolean validarLetraUnica (char original, char dada, boolean sensibleamayusculas
       dada   = toupper(dada);
   }
   
-  return (original == dada);
+  return (original == dada);//para devolver true o false según si son iguales o no
 }
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//   boolean validarLetraUnica (char original, char dada, boolean sensibleamayusculas);
+//
+//  USO:
+//
+//   Se devuelve true o false según si la letra original es igual a la dada o no.
+//
+//  DETALLES:
+//
+//    Si sensibleamayusculas es TRUE, tanto la original como la dada
+//    se pasan a mayúsculas; si es FALSE, no. Después de esto se devuelve 
+//    True o FAlse en función de si la letra original es igual a la dada o no.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    original, dada, sensibleamayusculas
+//
+//  VALOR DE SALIDA:
+//
+//    true/false
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    toupper()
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 boolean validarLetraConjunto (char letra, char seleccion[], boolean sensibleamayusculas)
@@ -1359,8 +2232,38 @@ boolean validarLetraConjunto (char letra, char seleccion[], boolean sensibleamay
   return resultado;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//   boolean validarLetraConjunto (char letra, char seleccion[], boolean sensibleamayusculas);
+//
+//  USO:
+//
+//   Se devuelve true o false según si la letra es igual a la selección o no.
+//
+//  DETALLES:
+//
+//    SE da resultado como false pero se comprueba si la letra es igual a la selección o no.
+//    Si son iguales se devuelve false, pero si no lo son, resultado cambia a true, sale del bucle y
+//    se devuelve.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    letra, selección, sensibleamayusculas
+//
+//  VALOR DE SALIDA:
+//
+//    false o true
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    validarLetraUnica()
+//
+////////////////////////////////////////////////////////////////////////////////
 
-char *cadenaOpcionesDisponibles (char entrada[])
+char *cadenaOpcionesDisponibles (char entrada[])//datos ent: teclas válidas para pedir que se devuelven más bonitos. 
+//L: Recibe una cadena y devuelve la cadena mejorada.
 {
   if (entrada == NULL) return NULL;   // Si no dan nada, petas máximus ...
   
@@ -1405,12 +2308,51 @@ char *cadenaOpcionesDisponibles (char entrada[])
   return textofinal;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//   char *cadenaOpcionesDisponibles (char entrada[]);
+//
+//  USO:
+//
+//    Recibe una cadena y devuelve los caracteres de la cadena separados
+//    por barras.
+//
+//  DETALLES:
+//
+//    Recibe una cadena. Si esta no tiene nada, se devuelve NULL. Si está vacía
+//    se considera que tiene un espacio, por tanto se reserva uno y se
+//    rellena con el caracter de fin de cadena. Si contiene caracteres, 
+//    se reserva con la función malloc() el doble de espacios que caracteres
+//    había en la cadena. Posteriormente, tras comprobar que se ha reservado
+//    algo de espacio, se copia cada caracter en la nueva cadena añadiendo
+//    una barra después para separarlo del siguiente. La última barra se
+//    sustituye por el caracter de fin de cadena. Finalmente se devuelve
+//    esta última cadena.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    entrada[]
+//
+//  VALOR DE SALIDA:
+//
+//    textofinal
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    strlen() (Determinar la longitud de la cadena entre paréntesis contando sus caracteres)
+//    malloc() (Reserva espacios en la memoria para tantos caracteres como se indique)
+//    bucles if y for
+//
+////////////////////////////////////////////////////////////////////////////////
 
-int pedirLetraSeleccion (char msjtxt[], int ncols, boolean mostrarerror, char seleccion[], boolean sensibleamayusculas)
+char pedirLetraSeleccion (char msjtxt[], int ncols, boolean mostrarerror, char seleccion[], boolean sensibleamayusculas)
 {
   // HACER: Evitar que falle con «seleccion» a valor NULL.
   
   // Usar «cadenaOpcionesDisponibles()» implica luego liberar memoria con «free()».
+  //pide una letra de entre un conjunto que tú le des en un texto. est.bas=dowhile
   char *editada = cadenaOpcionesDisponibles(seleccion);
   
   char letra;
@@ -1427,6 +2369,7 @@ int pedirLetraSeleccion (char msjtxt[], int ncols, boolean mostrarerror, char se
     letra = obtenerLetra();
 
     validada = validarLetraConjunto(letra, seleccion, sensibleamayusculas);
+    //L: este hace el trabajo duro
     
     if (mostrarerror)
     {
@@ -1440,7 +2383,7 @@ int pedirLetraSeleccion (char msjtxt[], int ncols, boolean mostrarerror, char se
   } while (!validada);
   
   // Liberamos la memoria para cadena modificada.
-  free(editada);
+  free(editada);//de librería estándar
   
   // Si no era sensible a mayúsculas, siempre la devolvemos mayúscula.
   if (!sensibleamayusculas)   letra = toupper(letra);
@@ -1448,9 +2391,52 @@ int pedirLetraSeleccion (char msjtxt[], int ncols, boolean mostrarerror, char se
   return letra;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCIÓN:
+//
+//    char pedirLetraSeleccion (char msjtxt[], int ncols, boolean mostrarerror, char seleccion[], boolean sensibleamayusculas)
+//
+//  USO:
+//    
+//    Recibe un mensaje de petición y una selección de caracteres.
+//    Devuelve la letra seleccionada cuando sea válida.
+//
+//  DETALLES:
+//
+//    Se recibe un mensaje, el número de espacios a la derecha que se quiere 
+//    mostrar y la selección. Además se asigna true o false tanto a si se quiere
+//    mostrar un mensaje de error en caso de que la letra no sea válida como a
+//    si se quiere que sea sensible a las mayúsculas.
+//    Se escribe el mensaje con la separación deseada y se muestra la selección
+//    entre corchetes y con los caracteres separados unos de otros por barras.
+//    A continuación se pide una letra al usuario y se comprueba si está dentro
+//    de la selección. En este momento, si la letra no esa válida, se muestra 
+//    el mensaje de error entre dos líneas en blanco si la opción del mensaje 
+//    estaba seleccionada. Esto se repite hasta que la letra que se introduzca
+//    se reconozca como válida. Si se ha escogido así, se pasa la letra a
+//    mayúscula. Por último, se devuelve la letra que se introdujo.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    msjtxt[], ncols, mostrarerror, seleccion[], sensibleamayusculas
+//
+//  VALOR DE SALIDA:
+//
+//    letra
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//    mensaje()
+//    mostrar()
+//    printf()
+//    obtenerLetra()
+//    toupper()
+//    mensaje_x_y()
+//    nuevaLinea()
+//    validarLetraConjunto()
+////////////////////////////////////////////////////////////////////////////////
 
-
-#ifdef SO_WINDOWS
+#ifdef SO_WINDOWS//sólo comentar una. devuelve una tecla
 
 #include <conio.h>
 
@@ -1491,7 +2477,7 @@ char obtenerTeclaInteractiva(void)
 #include <fcntl.h>
 #include <stdio.h>
 
-int obtenerTeclaInteractiva(void)
+int obtenerTeclaInteractiva(void) // debería char (depende de muchas funciones de librerías internas)
 {
   struct termios terminaloriginal, terminalnueva;
   int caracter;
@@ -1561,3 +2547,36 @@ int obtenerTeclaInteractiva(void)
 }
 
 #endif
+
+////////////////////////////////////////////////////////////////////////////////
+//  En WINDOWS:
+//
+//  FUNCIÓN:
+//
+//   char obtenerTeclaInteractiva(void);
+//
+//  USO:
+//
+//   Según la tecla que se pulse se ejecuta la acción  asignada.
+//
+//  DETALLES:
+//
+//    Recibe el código ASCII correspondiente según la tecla que
+//    se haya recibido con getchar y realiza la acción correspondiente 
+//    según su caso dentro del switch, ya sea de desplazamiento,
+//    intro o retroceso. Devuelve el caracter pulsado.
+//
+//  PARÁMETROS DE ENTRADA:
+//
+//    Ninguno
+//
+//  VALOR DE SALIDA:
+//
+//    character
+//
+//  FUNCIONES DE LAS QUE DEPENDE:
+//
+//    getch()
+//    bucles if y switch
+//
+////////////////////////////////////////////////////////////////////////////////
